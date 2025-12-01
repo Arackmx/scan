@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura | Estación de Testeo Scanner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Estilos Integrados */
+        
+        /* Variables para fácil personalización */
+        :root {
+            --color-bg-primary: #0C0C1E; /* Azul/Negro muy oscuro */
+            --color-text-light: #E0E0FF; /* Blanco azulado claro */
+            --color-accent-primary: #00FFFF; /* Cian brillante (futurista, para QR) */
+            --color-accent-secondary: #FFD700; /* Oro (para Códigos de Barras) */
+            --color-status-ok: #00FF00; /* Verde brillante para el estado OK */
+            --font-primary: 'Roboto', sans-serif;
+            --font-display: 'Orbitron', sans-serif;
+            --transition-speed: 0.3s;
+        }
+
+        /* 1. Reset Básico y Fondo Oscuro */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--color-bg-primary);
+            color: var(--color-text-light);
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 2. Encabezado (Header) y Navegación */
+        .header {
+            width: 100%;
+            padding: 20px 50px;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1); /* Línea sutil de neón */
+        }
+
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--color-accent-primary);
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5); /* Efecto neón */
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 40px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--color-text-light);
+            font-weight: 300;
+            transition: color var(--transition-speed), text-shadow var(--transition-speed);
+        }
+
+        .nav-links a:hover {
+            color: var(--color-accent-primary);
+            text-shadow: 0 0 5px var(--color-accent-primary);
+        }
+        
+        /* 3. Contenido Principal (Estación de Prueba) */
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .test-station {
+            max-width: 900px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.3); /* Fondo semitransparente para el panel */
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.15); /* Efecto de panel futurista */
+        }
+
+        .station-title {
+            font-family: var(--font-display);
+            font-size: 2.5em;
+            margin-bottom: 0.4em;
+            letter-spacing: 3px;
+            color: var(--color-accent-primary);
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+        }
+
+        .station-subtitle {
+            font-size: 1.1em;
+            font-weight: 300;
+            margin-bottom: 3em;
+            color: rgba(224, 224, 255, 0.8);
+        }
+
+        /* 4. Contenedor y Botones de Modo de Prueba */
+        .mode-container {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-bottom: 4em;
+        }
+
+        .mode-button {
+            display: block;
+            width: 300px; /* Ancho fijo para el toque de consola */
+            padding: 25px 20px;
+            text-decoration: none;
+            font-family: var(--font-display);
+            font-weight: 700;
+            color: var(--color-bg-primary);
+            border: 2px solid;
+            transition: all var(--transition-speed) ease-in-out;
+            letter-spacing: 1px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+        }
+
+        /* Estilo específico para QR */
+        .qr-mode {
+            background-color: var(--color-accent-primary);
+            border-color: var(--color-accent-primary);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
+        }
+
+        .qr-mode:hover {
+            background-color: var(--color-bg-primary);
+            color: var(--color-accent-primary);
+            box-shadow: 0 0 30px var(--color-accent-primary);
+        }
+
+        /* Estilo específico para Barras */
+        .barcode-mode {
+            background-color: var(--color-accent-secondary);
+            border-color: var(--color-accent-secondary);
+            color: var(--color-bg-primary);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+
+        .barcode-mode:hover {
+            background-color: var(--color-bg-primary);
+            color: var(--color-accent-secondary);
+            box-shadow: 0 0 30px var(--color-accent-secondary);
+        }
+
+        /* Indicador de Estado */
+        .status-indicator {
+            font-size: 1.2em;
+            font-family: var(--font-display);
+        }
+
+        #system-status {
+            color: var(--color-status-ok);
+            margin-left: 10px;
+            text-shadow: 0 0 10px var(--color-status-ok);
+            /* Animación opcional de parpadeo para el toque futurista */
+            animation: pulse-status 2s infinite alternate;
+        }
+
+        @keyframes pulse-status {
+            from { opacity: 1; }
+            to { opacity: 0.7; }
+        }
+
+        /* 5. Pie de Página (Footer) */
+        .footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 0.8em;
+            color: rgba(224, 224, 255, 0.5);
+            border-top: 1px solid rgba(0, 255, 255, 0.05);
+        }
+
+        /* 6. Media Query para Responsividad */
+        @media (max-width: 768px) {
+            .header {
+                padding: 15px 20px;
+            }
+            .nav-bar {
+                flex-direction: column;
+            }
+            .nav-links {
+                margin-top: 15px;
+                padding-left: 0;
+            }
+            .nav-links li {
+                margin: 0 15px;
+            }
+            .test-station {
+                padding: 30px 15px;
+            }
+            .station-title {
+                font-size: 2em;
+            }
+            .mode-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            .mode-button {
+                width: 100%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav-bar">
+            <div class="logo">SCANNER v2.0</div>
+            <ul class="nav-links">
+                <li><a href="#test">Módulos de Prueba</a></li>
+                <li><a href="#log">Historial</a></li>
+                <li><a href="#doc">Documentación</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="test-station">
+            <h1 class="station-title">Consola de Prueba de Códigos</h1>
+            <p class="station-subtitle">Seleccione el modo de testeo para iniciar la validación de hardware y software de escaneo.</p>
+            
+            <div class="mode-container">
+                <a href="qr-test.html" class="mode-button qr-mode">
+                    QR | Validación Óptica
+                </a>
+                <a href="barcode-test.html" class="mode-button barcode-mode">
+                    Barras | Validación Magnética
+                </a>
+            </div>
+
+            <p class="status-indicator">Estado del Sistema: <span id="system-status">LISTO</span></p>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Test Environment. Ambiente de Prueba - No para Producción.</p>
+    </footer>
+
+</body>
+</html>
