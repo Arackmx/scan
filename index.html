@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCANNER | Consola de Acceso Multi-Versión</title>
+    <title>SCANNER | Consola de Acceso</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
     
     <style>
         /* Variables y Reset */
         :root {
-            --color-bg-primary: #050A19; /* Azul marino muy oscuro */
+            --color-bg-primary: #040812; /* Azul marino muy oscuro (casi negro) */
             --color-text-light: #E0E0FF;
             --color-accent-blue: #00AFFF; /* Cian brillante */
             --color-accent-pink: #FF0077; /* Magenta */
@@ -32,11 +32,11 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            overflow: hidden; /* Oculta barras de desplazamiento del fondo dinámico */
+            overflow: hidden; 
             position: relative;
         }
 
-        /* 1. Fondo Dinámico (Partículas/Estrellas) */
+        /* 1. Fondo Dinámico (Partículas) */
         .background-effect {
             position: fixed;
             top: 0;
@@ -44,9 +44,12 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: radial-gradient(circle at center, rgba(0, 175, 255, 0.1), rgba(0, 0, 0, 0.8));
-            opacity: 0.8;
-            /* Animación de desplazamiento sutil */
+            /* Patrón de puntos o estrellas */
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 175, 255, 0.15) 1px, transparent 1px),
+                radial-gradient(circle at 90% 80%, rgba(255, 0, 119, 0.15) 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px, 70px 70px, 30px 30px;
             animation: moveBackground 60s linear infinite;
         }
 
@@ -55,74 +58,77 @@
             100% { background-position: 100% 100%; }
         }
 
-        /* Contenido Principal (Estación de Prueba) */
+        /* 2. Contenido Principal y Panel */
         .main-content {
             flex-grow: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 50px 20px;
-            z-index: 1; /* Asegura que el contenido esté sobre el fondo */
+            padding: 30px 20px;
+            z-index: 1; 
         }
 
         .control-panel {
-            max-width: 1000px;
-            padding: 50px;
-            background: rgba(0, 0, 0, 0.6); 
+            max-width: 800px;
+            width: 100%;
+            padding: 40px 30px;
+            background: rgba(0, 0, 0, 0.5); 
             border: 1px solid var(--color-accent-blue);
-            box-shadow: 0 0 40px rgba(0, 175, 255, 0.4); /* Sombra de neón más fuerte */
-            backdrop-filter: blur(5px); /* Efecto de cristal esmerilado */
-            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 175, 255, 0.3); 
+            backdrop-filter: blur(8px); /* Mayor desenfoque */
+            border-radius: 12px;
         }
 
         .panel-title {
             font-family: var(--font-display);
-            font-size: 3em;
-            margin-bottom: 0.3em;
-            letter-spacing: 5px;
+            font-size: 2.5em;
+            margin-bottom: 0.2em;
+            letter-spacing: 3px;
             color: var(--color-text-light);
-            text-shadow: 0 0 15px var(--color-accent-blue);
+            text-shadow: 0 0 10px var(--color-accent-blue);
         }
 
         .panel-subtitle {
-            font-size: 1.2em;
+            font-size: 1em;
             font-weight: 300;
             margin-bottom: 3em;
-            color: rgba(224, 224, 255, 0.9);
+            color: rgba(224, 224, 255, 0.7);
         }
 
-        /* 2. Botones de Versión */
+        /* 3. Botones de Versión */
         .version-container {
             display: flex;
-            gap: 40px;
+            gap: 20px;
             justify-content: center;
-            margin-bottom: 4em;
+            margin-bottom: 3em;
         }
 
         .version-button {
             display: block;
-            width: 350px;
-            padding: 30px 20px;
+            flex: 1; /* Ocupa espacio igual */
+            padding: 20px 15px;
             text-decoration: none;
             font-family: var(--font-display);
             font-weight: 700;
-            font-size: 1.5em;
+            font-size: 1.1em;
             text-transform: uppercase;
-            transition: transform 0.2s, box-shadow 0.4s;
+            transition: all var(--transition-speed);
             border-radius: 5px;
-            line-height: 1.2;
+            line-height: 1.3;
         }
         
-        /* Estilo V1.0 - Cian */
+        /* Estilo V01 - Cian */
         .v1-mode {
             color: var(--color-bg-primary);
             background-color: var(--color-accent-blue);
             box-shadow: 0 0 15px var(--color-accent-blue);
         }
         .v1-mode:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 25px var(--color-accent-blue), 0 0 40px var(--color-accent-blue);
+            background-color: transparent;
+            color: var(--color-accent-blue);
+            border: 2px solid var(--color-accent-blue);
+            box-shadow: 0 0 30px var(--color-accent-blue);
         }
 
         /* Estilo V3.03 - Magenta */
@@ -132,11 +138,13 @@
             box-shadow: 0 0 15px var(--color-accent-pink);
         }
         .v3-mode:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 25px var(--color-accent-pink), 0 0 40px var(--color-accent-pink);
+            background-color: transparent;
+            color: var(--color-accent-pink);
+            border: 2px solid var(--color-accent-pink);
+            box-shadow: 0 0 30px var(--color-accent-pink);
         }
-
-        /* 3. Campo de Búsqueda */
+        
+        /* 4. Campo de Búsqueda */
         .search-container {
             margin-top: 2em;
             display: flex;
@@ -146,17 +154,15 @@
 
         .search-input {
             width: 100%;
-            max-width: 400px;
-            padding: 15px;
+            max-width: 450px;
+            padding: 12px;
             margin-bottom: 15px;
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--color-accent-blue);
             color: var(--color-text-light);
             font-size: 1em;
-            font-family: var(--font-primary);
             border-radius: 3px;
             outline: none;
-            transition: border-color 0.3s;
         }
 
         .search-input:focus {
@@ -182,31 +188,35 @@
             box-shadow: 0 0 15px var(--color-accent-pink);
         }
         
-        /* Pie de Página (Footer) - Más sutil */
+        /* Pie de Página (Footer) - Simplificado */
         .footer {
-            padding: 20px;
+            padding: 15px;
             text-align: center;
-            font-size: 0.8em;
-            color: rgba(224, 224, 255, 0.5);
-            border-top: 1px solid rgba(0, 175, 255, 0.05);
+            font-size: 0.75em;
+            color: rgba(224, 224, 255, 0.4);
             z-index: 1;
         }
 
-        /* Media Query para Responsividad */
-        @media (max-width: 900px) {
+        /* 5. Responsividad Móvil (Asegura buena vista en pantallas pequeñas) */
+        @media (max-width: 600px) {
             .control-panel {
-                padding: 30px;
+                padding: 30px 20px;
             }
             .panel-title {
-                font-size: 2.2em;
+                font-size: 1.8em; /* Tamaño más pequeño en móvil */
+                letter-spacing: 2px;
+            }
+            .panel-subtitle {
+                font-size: 0.9em;
+                margin-bottom: 2em;
             }
             .version-container {
-                flex-direction: column;
-                gap: 20px;
+                flex-direction: column; /* Apila los botones verticalmente */
+                gap: 15px;
             }
             .version-button {
-                width: 100%;
-                font-size: 1.2em;
+                font-size: 1em;
+                padding: 18px 10px;
             }
         }
     </style>
@@ -217,27 +227,27 @@
 
     <main class="main-content">
         <section class="control-panel">
-            <h1 class="panel-title">SCANNER | Consola de Acceso</h1>
-            <p class="panel-subtitle">Seleccione la versión del módulo de testeo o utilice la búsqueda directa.</p>
+            <h1 class="panel-title">ACCESO A MÓDULOS DE SCANNER</h1>
+            <p class="panel-subtitle">Seleccione la versión del módulo de testeo o acceda directamente a un archivo.</p>
             
             <div class="version-container">
                 <a href="v1.html" class="version-button v1-mode">
-                    MÓDULO V1.0<br>Legacy Testing
+                    VERSION 01 - BASIC
                 </a>
                 <a href="v3.03.html" class="version-button v3-mode">
-                    MÓDULO V3.03<br>Quantum Scan
+                    VERSION 3.03
                 </a>
             </div>
 
             <div class="search-container">
-                <input type="text" id="file-search-input" class="search-input" placeholder="Buscar archivo HTML (ej: setup.html, report.html)">
+                <input type="text" id="file-search-input" class="search-input" placeholder="Buscar archivo HTML (ej: setup.html)">
                 <button onclick="searchAndOpenFile()" class="search-button">Acceder</button>
             </div>
         </section>
     </main>
 
     <footer class="footer">
-        <p>&copy; 2025 Test Environment. Acceso Restringido.</p>
+        <p>Ambiente de Prueba | Desarrollado por Test Systems.</p>
     </footer>
 
     <script>
@@ -251,7 +261,7 @@
 
             let filename = input;
             
-            // Aseguramos la extensión .html
+            // Aseguramos la extensión .html (si no la tiene)
             if (!filename.toLowerCase().endsWith('.html')) {
                 filename += '.html';
             }
