@@ -1,282 +1,191 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCANNER | Consola de Acceso</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
-    
-    <style>
-        /* Variables y Reset */
-        :root {
-            --color-bg-primary: #040812; /* Azul marino muy oscuro (casi negro) */
-            --color-text-light: #E0E0FF;
-            --color-accent-blue: #00AFFF; /* Cian brillante */
-            --color-accent-pink: #FF0077; /* Magenta */
-            --font-primary: 'Roboto', sans-serif;
-            --font-display: 'Orbitron', sans-serif;
-            --transition-speed: 0.4s;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Web APP</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <!-- Fuente estilo Google (Outfit = casi idéntica a Google Sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        body {
-            background-color: var(--color-bg-primary);
-            color: var(--color-text-light);
-            font-family: var(--font-primary);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden; 
-            position: relative;
-        }
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* 1. Fondo Dinámico (Partículas) */
-        .background-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            /* Patrón de puntos o estrellas */
-            background: 
-                radial-gradient(circle at 10% 20%, rgba(0, 175, 255, 0.15) 1px, transparent 1px),
-                radial-gradient(circle at 90% 80%, rgba(255, 0, 119, 0.15) 1px, transparent 1px),
-                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px, 70px 70px, 30px 30px;
-            animation: moveBackground 60s linear infinite;
-        }
+    body {
+      font-family: 'Outfit', sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      background: #0c0c1e;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
 
-        @keyframes moveBackground {
-            0% { background-position: 0% 0%; }
-            100% { background-position: 100% 100%; }
-        }
+    #particles-js {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #0f0f23 0%, #16213e 100%);
+    }
 
-        /* 2. Contenido Principal y Panel */
-        .main-content {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 30px 20px;
-            z-index: 1; 
-        }
+    .container {
+      text-align: center;
+      z-index: 10;
+      width: 90%;
+      max-width: 560px;
+      padding: 3rem 2rem;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+      animation: fadeIn 1.6s ease-out;
+    }
 
-        .control-panel {
-            max-width: 800px;
-            width: 100%;
-            padding: 40px 30px;
-            background: rgba(0, 0, 0, 0.5); 
-            border: 1px solid var(--color-accent-blue);
-            box-shadow: 0 0 30px rgba(0, 175, 255, 0.3); 
-            backdrop-filter: blur(8px); /* Mayor desenfoque */
-            border-radius: 12px;
-        }
+    h1 {
+      font-size: clamp(3rem, 10vw, 5.5rem);
+      font-weight: 700;
+      background: linear-gradient(90deg, #00d4ff, #0099ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 3.5rem;
+      letter-spacing: 4px;
+    }
 
-        .panel-title {
-            font-family: var(--font-display);
-            font-size: 2.5em;
-            margin-bottom: 0.2em;
-            letter-spacing: 3px;
-            color: var(--color-text-light);
-            text-shadow: 0 0 10px var(--color-accent-blue);
-        }
+    .search-box {
+      margin-bottom: 3.5rem;
+    }
 
-        .panel-subtitle {
-            font-size: 1em;
-            font-weight: 300;
-            margin-bottom: 3em;
-            color: rgba(224, 224, 255, 0.7);
-        }
+    input[type="text"] {
+      width: 100%;
+      max-width: 480px;
+      padding: 1.3rem 2rem;
+      font-size: 1.15rem;
+      font-weight: 500;
+      font-family: 'Outfit', sans-serif;
+      border: none;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.14);
+      color: white;
+      outline: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
 
-        /* 3. Botones de Versión */
-        .version-container {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            margin-bottom: 3em;
-        }
+    input[type="text"]::placeholder {
+      color: #a8e1ff;
+      font-weight: 400;
+    }
 
-        .version-button {
-            display: block;
-            flex: 1; /* Ocupa espacio igual */
-            padding: 20px 15px;
-            text-decoration: none;
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1.1em;
-            text-transform: uppercase;
-            transition: all var(--transition-speed);
-            border-radius: 5px;
-            line-height: 1.3;
-        }
-        
-        /* Estilo V01 - Cian */
-        .v1-mode {
-            color: var(--color-bg-primary);
-            background-color: var(--color-accent-blue);
-            box-shadow: 0 0 15px var(--color-accent-blue);
-        }
-        .v1-mode:hover {
-            background-color: transparent;
-            color: var(--color-accent-blue);
-            border: 2px solid var(--color-accent-blue);
-            box-shadow: 0 0 30px var(--color-accent-blue);
-        }
+    input[type="text"]:focus {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 0 5px rgba(0, 212, 255, 0.3);
+      transform: scale(1.03);
+    }
 
-        /* Estilo V3.03 - Magenta */
-        .v3-mode {
-            color: var(--color-bg-primary);
-            background-color: var(--color-accent-pink);
-            box-shadow: 0 0 15px var(--color-accent-pink);
-        }
-        .v3-mode:hover {
-            background-color: transparent;
-            color: var(--color-accent-pink);
-            border: 2px solid var(--color-accent-pink);
-            box-shadow: 0 0 30px var(--color-accent-pink);
-        }
-        
-        /* 4. Campo de Búsqueda */
-        .search-container {
-            margin-top: 2em;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    .buttons {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
 
-        .search-input {
-            width: 100%;
-            max-width: 450px;
-            padding: 12px;
-            margin-bottom: 15px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--color-accent-blue);
-            color: var(--color-text-light);
-            font-size: 1em;
-            border-radius: 3px;
-            outline: none;
-        }
+    button {
+      flex: 1;
+      min-width: 220px;
+      max-width: 260px;
+      padding: 1.2rem 1.5rem;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      background: linear-gradient(45deg, #00d4ff, #007bff);
+      color: white;
+      box-shadow: 0 12px 30px rgba(0, 123, 255, 0.4);
+      transition: all 0.4s ease;
+    }
 
-        .search-input:focus {
-            border-color: var(--color-accent-pink);
-            box-shadow: 0 0 10px rgba(255, 0, 119, 0.5);
-        }
+    button:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 22px 45px rgba(0, 212, 255, 0.5);
+    }
 
-        .search-button {
-            padding: 10px 25px;
-            background-color: transparent;
-            color: var(--color-accent-pink);
-            border: 2px solid var(--color-accent-pink);
-            font-family: var(--font-display);
-            cursor: pointer;
-            text-transform: uppercase;
-            transition: background-color 0.3s, color 0.3s;
-            border-radius: 3px;
-        }
+    button:active {
+      transform: translateY(-4px);
+    }
 
-        .search-button:hover {
-            background-color: var(--color-accent-pink);
-            color: var(--color-bg-primary);
-            box-shadow: 0 0 15px var(--color-accent-pink);
-        }
-        
-        /* Pie de Página (Footer) - Simplificado */
-        .footer {
-            padding: 15px;
-            text-align: center;
-            font-size: 0.75em;
-            color: rgba(224, 224, 255, 0.4);
-            z-index: 1;
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(50px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-        /* 5. Responsividad Móvil (Asegura buena vista en pantallas pequeñas) */
-        @media (max-width: 600px) {
-            .control-panel {
-                padding: 30px 20px;
-            }
-            .panel-title {
-                font-size: 1.8em; /* Tamaño más pequeño en móvil */
-                letter-spacing: 2px;
-            }
-            .panel-subtitle {
-                font-size: 0.9em;
-                margin-bottom: 2em;
-            }
-            .version-container {
-                flex-direction: column; /* Apila los botones verticalmente */
-                gap: 15px;
-            }
-            .version-button {
-                font-size: 1em;
-                padding: 18px 10px;
-            }
-        }
-    </style>
+    /* Responsivo perfecto - simetría total */
+    @media (max-width: 640px) {
+      .container { padding: 2.5rem 1.5rem; }
+      h1 { margin-bottom: 3rem; }
+      .search-box { margin-bottom: 3rem; }
+      .buttons { flex-direction: column; gap: 1.5rem; }
+      button { width: 100%; max-width: 320px; }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="background-effect"></div>
+  <div id="particles-js"></div>
 
-    <main class="main-content">
-        <section class="control-panel">
-            <h1 class="panel-title">ACCESO A MÓDULOS DE SCANNER</h1>
-            <p class="panel-subtitle">Seleccione la versión del módulo de testeo o acceda directamente a un archivo.</p>
-            
-            <div class="version-container">
-                <a href="v1.html" class="version-button v1-mode">
-                    VERSION 01 - BASIC
-                </a>
-                <a href="v3.03.html" class="version-button v3-mode">
-                    VERSION 3.03
-                </a>
-            </div>
+  <div class="container">
+    <h1>Web APP</h1>
 
-            <div class="search-container">
-                <input type="text" id="file-search-input" class="search-input" placeholder="Buscar archivo HTML (ej: setup.html)">
-                <button onclick="searchAndOpenFile()" class="search-button">Acceder</button>
-            </div>
-        </section>
-    </main>
+    <div class="search-box">
+      <input type="text" id="fileInput" placeholder="Escribe el archivo y presiona Enter" autocomplete="off">
+    </div>
 
-    <footer class="footer">
-        <p>Ambiente de Prueba | Desarrollado por Test Systems.</p>
-    </footer>
+    <div class="buttons">
+      <button onclick="location.href='v1.html'">v1.html</button>
+      <button onclick="location.href='v3.03.html'">v3.03.html</button>
+    </div>
+  </div>
 
-    <script>
-        function searchAndOpenFile() {
-            const input = document.getElementById('file-search-input').value.trim();
-            
-            if (input === '') {
-                alert('Por favor, introduce el nombre de un archivo.');
-                return;
-            }
-
-            let filename = input;
-            
-            // Aseguramos la extensión .html (si no la tiene)
-            if (!filename.toLowerCase().endsWith('.html')) {
-                filename += '.html';
-            }
-
-            // Abrir el archivo en la misma ventana
-            window.location.href = filename;
+  <!-- Particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#00ccff" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5, random: true },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: "#00ccff", opacity: 0.3, width: 1 },
+        move: { enable: true, speed: 2 }
+      },
+      interactivity: {
+        events: {
+          onhover: { enable: true, mode: "repulse" },
+          onclick: { enable: true, mode: "push" }
         }
-        
-        // Permite presionar Enter en el campo de búsqueda
-        document.getElementById('file-search-input').addEventListener('keydown', function(event) {
-            if (event.key === 'Enter') {
-                searchAndOpenFile();
-            }
-        });
-    </script>
+      },
+      retina_detect: true
+    });
 
+    // Búsqueda con Enter
+    document.getElementById('fileInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        let file = this.value.trim();
+        if (file) {
+          if (!file.endsWith('.html')) file += '.html';
+          location.href = file;
+        }
+      }
+    });
+  </script>
 </body>
 </html>
